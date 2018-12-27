@@ -8,7 +8,9 @@ from flask import request
 
 app = Flask(__name__)
 if 'DEBUG' in os.environ:
+    print('found DEBUG=%s in environment' % os.environ['DEBUG'])
     app.config['DEBUG'] = os.environ['DEBUG'] in ('true', 'True', 'TRUE')
+    print('set app config: DEBUG=%s' % app.config['DEBUG'])
 
 
 @app.route('/', defaults={'path': ''})
