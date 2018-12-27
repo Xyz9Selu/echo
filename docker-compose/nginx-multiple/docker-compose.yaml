@@ -1,0 +1,31 @@
+version: '2'
+services:
+  nginx:
+    image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/es-nginx:uwsgi-v2
+    restart: always
+    ports:
+    - 8080:80/tcp
+    environment:
+    - TZ=Asia/Shanghai
+    - UPSTREAM_UWSGI_SERVICES=server service01:4080; server service02:4080;
+    mem_limit: 209715200
+    links:
+    - service01
+    - service02
+
+  service01:
+    image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/echo:latest
+    command: uwsgi --processes=1 -M --gevent=100 -s :4080 -w echo:app
+    expose:
+    - 4080/tcp
+
+  service02:
+    image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/echo:latest
+    command: uwsgi --processes=1 -M --gevent=100 -s :4080 -w echo:app
+    expose:
+    - 4080/tcp
+
+networks:
+  default:
+    external:
+      name: network_default

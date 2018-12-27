@@ -17,13 +17,18 @@ def echo(path):
 
 
 @app.route('/status/<code>')
-def not_found(code):
+def status(code):
     try:
         status_code = int(code)
 
         return 'as you wish...', status_code
     except ValueError:
         return 'illegal status code: %s' % code
+
+
+@app.route('/raise_exception')
+def raise_exception():
+    raise RuntimeError('raise exception on purpose')
 
 
 @app.route('/sys-status/')
