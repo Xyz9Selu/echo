@@ -1,13 +1,14 @@
-import sys
-
 from gevent import monkey
 monkey.patch_all()
+
+import os
+import sys
 
 from flask import Flask
 from flask import request
 
 app = Flask(__name__)
-if 'DEBUG' in sys.argv:
+if 'DEBUG' in os.environ:
     app.config['DEBUG'] = sys.argv['DEBUG'] in ('true', 'True', 'TRUE')
 
 
