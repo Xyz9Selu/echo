@@ -4,7 +4,9 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/echo:latest
     command: uwsgi --processes=1 -M --gevent=100 --http-socket :80 -w app:app
     ports:
-      - "8081:80/tcp"
+    - "8081:80/tcp"
+    environment:
+    - DEBUG=False
     restart: always
 
 networks:

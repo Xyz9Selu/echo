@@ -8,7 +8,7 @@ from flask import request
 
 app = Flask(__name__)
 if 'DEBUG' in sys.argv:
-    app.config['DEBUG'] = sys.argv['DEBUG']
+    app.config['DEBUG'] = sys.argv['DEBUG'] in ('true', 'True', 'TRUE')
 
 
 @app.route('/', defaults={'path': ''})

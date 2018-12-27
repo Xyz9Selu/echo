@@ -18,6 +18,8 @@ services:
     command: uwsgi --processes=1 -M --gevent=100 -s :4080 -w app:app
     expose:
     - 4080/tcp
+    environment:
+    - DEBUG=False
 
 networks:
   default:
