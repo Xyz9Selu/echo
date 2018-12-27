@@ -1,15 +1,14 @@
-from gevent import monkey
-monkey.patch_all()
+# from gevent import monkey
+# monkey.patch_all()
 
 import os
-import sys
 
 from flask import Flask
 from flask import request
 
 app = Flask(__name__)
 if 'DEBUG' in os.environ:
-    app.config['DEBUG'] = sys.argv['DEBUG'] in ('true', 'True', 'TRUE')
+    app.config['DEBUG'] = os.environ['DEBUG'] in ('true', 'True', 'TRUE')
 
 
 @app.route('/', defaults={'path': ''})
