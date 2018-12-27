@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import request
 
+from exception import IllegalRequestException
+
 app = Flask(__name__)
 
 
@@ -35,9 +37,14 @@ def runtime_exception():
     raise RuntimeError('raise runtim exception on purpose')
 
 
-@app.route('/raise_exception')
+@app.route('/foo_exception')
 def foo_exception():
     raise FooException('raise foo exception on purpose')
+
+
+@app.route('/bar_exception/<service_path>')
+def bar_exception(service_path):
+    raise IllegalRequestException(u'unknown service: ' + service_path)
 
 
 @app.route('/sys-status/')
