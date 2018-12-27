@@ -1,0 +1,8 @@
+version: '2'
+services:
+  axinfu_echo:
+    image: axf-echo
+    command: uwsgi --processes=1 -M --gevent=100 --http-socket :80 -w echo:app
+    ports:
+      - "4084:80/tcp"
+    restart: always
