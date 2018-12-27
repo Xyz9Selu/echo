@@ -1,20 +1,14 @@
+import sys
+
 from gevent import monkey
 monkey.patch_all()
 
 from flask import Flask
 from flask import request
 
-from exception import IllegalRequestException
-
 app = Flask(__name__)
-
-
-class Response(object):
-    pass
-
-
-class FooException(Exception):
-    pass
+if 'DEBUG' in sys.argv:
+    app.config['DEBUG'] = sys.argv['DEBUG']
 
 
 @app.route('/', defaults={'path': ''})
@@ -41,17 +35,11 @@ def status(code):
 
 @app.route('/raise_exception')
 def runtime_exception():
+    debug = request.args.get('debug', None)
+    if debug is not None:
+        app.config['DEBUG'] = debug
+
     raise RuntimeError('raise runtim exception on purpose')
-
-
-@app.route('/foo_exception')
-def foo_exception():
-    raise FooException('raise foo exception on purpose')
-
-
-@app.route('/bar_exception/<service_path>')
-def bar_exception(service_path):
-    raise IllegalRequestException(u'unknown service: ' + service_path)
 
 
 @app.route('/sys-status/')
