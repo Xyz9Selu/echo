@@ -4,6 +4,10 @@ from flask import request
 app = Flask(__name__)
 
 
+class FooException(Exception):
+    pass
+
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def echo(path):
@@ -27,8 +31,13 @@ def status(code):
 
 
 @app.route('/raise_exception')
-def raise_exception():
-    raise RuntimeError('raise exception on purpose')
+def runtime_exception():
+    raise RuntimeError('raise runtim exception on purpose')
+
+
+@app.route('/raise_exception')
+def foo_exception():
+    raise FooException('raise foo exception on purpose')
 
 
 @app.route('/sys-status/')

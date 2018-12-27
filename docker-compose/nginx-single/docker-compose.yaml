@@ -1,10 +1,11 @@
 version: '2'
 services:
   nginx:
-    image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/es-nginx:uwsgi
+    image: registry.cn-hangzhou.aliyuncs.com/axinfu/axf-nginx:uwsgi
+#    image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/es-nginx:uwsgi
     restart: always
     ports:
-    - 8080:80/tcp
+    - 8081:80/tcp
     environment:
     - TZ=Asia/Shanghai
     - UWSGI_URL=service01:4080
@@ -14,7 +15,7 @@ services:
 
   service01:
     image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/echo:latest
-    command: uwsgi --processes=1 -M --gevent=100 -s :4080 -w echo:app
+    command: uwsgi --processes=1 -M --gevent=100 -s :4080 -w app:app
     expose:
     - 4080/tcp
 
