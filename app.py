@@ -9,6 +9,10 @@ from exception import IllegalRequestException
 app = Flask(__name__)
 
 
+class Response(object):
+    pass
+
+
 class FooException(Exception):
     pass
 
