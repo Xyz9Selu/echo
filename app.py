@@ -5,6 +5,7 @@ import os
 
 from flask import Flask
 from flask import request
+from pprint import pformat
 
 app = Flask(__name__)
 if 'DEBUG' in os.environ:
@@ -20,14 +21,14 @@ def echo(path):
     headers = request.headers
 
     data = request.get_data()
-    args = request.args
-    form = request.form
+    args = pformat(request.args.to_dict())
+    form = pformat(request.form.to_dict())
 
     return 'path: {path}\n' \
            'method: {method}\n' \
            'headers: {headers}\n' \
            'data: {data}\n' \
-           '-----------------------------------------------------------------------------------------\n' \
+           '-----------------------------------------end data-----------------------------------------\n' \
            'args: {args}\n' \
            'form: {form}'\
         .strip().format(path=path, method=method, headers=headers, data=data, args=args, form=form)
