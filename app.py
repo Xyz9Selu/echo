@@ -19,10 +19,17 @@ def echo(path):
     method = request.method
     headers = request.headers
 
+    args = request.args
+    form = request.form
+
     return 'path: {path}\n' \
            'method: {method}\n' \
            'headers: {headers}\n' \
-           'data: {data}'.strip().format(path=path, method=method, headers=headers, data=request.get_data())
+           'data: {data}\n' \
+           '-----------------------------------------------------------------------------------------\n' \
+           'args: {args}\n' \
+           'form: {form}'.strip().format(path=path, method=method, headers=headers, data=request.get_data(),
+                                         args=args, form=form)
 
 
 @app.route('/status/<code>')
