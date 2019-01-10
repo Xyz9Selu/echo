@@ -1,8 +1,7 @@
 version: '2'
 services:
   nginx:
-    image: registry.cn-hangzhou.aliyuncs.com/axinfu/axf-nginx:uwsgi
-#    image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/es-nginx:uwsgi
+   image: registry.cn-hangzhou.aliyuncs.com/endlessstudio/es-nginx:uwsgi
     restart: always
     ports:
     - 8081:80/tcp
