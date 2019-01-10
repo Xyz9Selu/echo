@@ -22,7 +22,7 @@ def echo(path):
     return 'path: {path}\n' \
            'method: {method}\n' \
            'headers: {headers}\n' \
-           'data: {data}'.strip().format(path=path, method=method, headers=headers, data=request.data)
+           'data: {data}'.strip().format(path=path, method=method, headers=headers, data=request.get_data())
 
 
 @app.route('/status/<code>')
