@@ -19,6 +19,7 @@ def echo(path):
     method = request.method
     headers = request.headers
 
+    data = request.get_data()
     args = request.args
     form = request.form
 
@@ -28,8 +29,8 @@ def echo(path):
            'data: {data}\n' \
            '-----------------------------------------------------------------------------------------\n' \
            'args: {args}\n' \
-           'form: {form}'.strip().format(path=path, method=method, headers=headers, data=request.get_data(),
-                                         args=args, form=form)
+           'form: {form}'\
+        .strip().format(path=path, method=method, headers=headers, data=data, args=args, form=form)
 
 
 @app.route('/status/<code>')
@@ -57,4 +58,4 @@ def sys_status():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
