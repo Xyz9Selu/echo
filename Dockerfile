@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.11-slim
 
 # set timezone
 ENV TZ=Asia/Shanghai
@@ -20,4 +20,4 @@ RUN mkdir /var/log/echo/
 WORKDIR /src
 
 EXPOSE 80
-CMD uwsgi --processes=1 -M --gevent=100 --http-socket :80 -w app:app
+CMD uwsgi --processes=1 -M --gevent=100 --http :80 -w app:app

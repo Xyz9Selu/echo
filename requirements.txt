@@ -1,5 +1,1 @@
-requests
 Flask
-gevent
-Flask-Mail
-Flask-Login
