@@ -8,7 +8,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ADD $PROJ_FOLDER/requirements.txt requirements.txt
 
 # 安装依赖
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential default-libmysqlclient-dev && \
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential default-libmysqlclient-dev python3-gevent && \
 pip install --no-cache-dir -r requirements.txt && \
 pip install --no-cache-dir uwsgi && \
 apt-get purge -y build-essential && \
@@ -26,4 +26,4 @@ WORKDIR /src
 
 EXPOSE 80
 
-CMD uwsgi --processes=1 -M --http :80 -w app:app
+CMD uwsgi --processes=1 -M --gevent=100 --http :80 -w app:app
