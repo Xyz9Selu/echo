@@ -10,6 +10,7 @@ ADD $PROJ_FOLDER/requirements.txt requirements.txt
 # 安装依赖
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential default-libmysqlclient-dev && \
 pip install --no-cache-dir -r requirements.txt && \
+pip install --no-cache-dir uwsgi && \
 apt-get purge -y build-essential && \
 apt-get autoremove -y && apt-get autoclean
 
