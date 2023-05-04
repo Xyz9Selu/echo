@@ -26,4 +26,4 @@ WORKDIR /src
 
 EXPOSE 80
 
-CMD uwsgi --processes=1 -M --gevent=100 --http :80 -w app:app
+CMD uwsgi --processes=1 -M --http :80 -w app:app
