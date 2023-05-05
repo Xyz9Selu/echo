@@ -1,30 +1,39 @@
-FROM python:3.11-slim
+FROM python:3.11-slim AS base
 
-# set time zone
-ENV TZ=Asia/Shanghai
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# 设置环境变量
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONFAULTHANDLER 1
 
-# copy requirements
-ADD ./requirements.txt requirements.txt
+# 缓存层
+FROM base AS python-deps
 
-# 安装依赖
-RUN sed -i 's,[a-z\.]*\.debian.org,mirrors.aliyun.com,g' /etc/apt/sources.list && \
-apt-get update && apt-get install -y --no-install-recommends build-essential default-libmysqlclient-dev && \
-pip install -i https://pypi.douban.com/simple/ --no-cache-dir -r requirements.txt && \
-pip install -i https://pypi.douban.com/simple/ --no-cache-dir uwsgi && \
-apt-get purge -y build-essential && \
-apt-get autoremove -y && apt-get autoclean
+# 安装Pipenv及其它编译依赖
+RUN pip install pipenv -i https://pypi.douban.com/simple/
+RUN sed -i 's,[a-z\.]*\.debian.org,mirrors.aliyun.com,g' /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends build-essential
 
-RUN pip install uwsgi
+# 安装Python依赖于/.venv
+COPY Pipfile .
+COPY Pipfile.lock .
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy --skip-lock uwsgi
 
-# 拷贝项目文件
-COPY . /src
 
-# 其它工作...
-RUN mkdir /var/log/echo/
+# 服务层
+FROM base AS runtime
+
+# 将安装好的依赖拷贝至当前层
+# pip install -i https://pypi.douban.com/simple/ --no-cache-dir uwsgi
+COPY --from=python-deps /.venv /.venv
+ENV PATH="/.venv/bin:$PATH"
 
 WORKDIR /src
 
-EXPOSE 80
+# Install application into container
+COPY . .
 
+# Run the application
 CMD uwsgi --processes=1 -M --gevent=100 --http :80 -w app:app
