@@ -68,6 +68,10 @@ def access_url():
     try:
         response = requests.request(method, url, headers=headers, data=data)
 
+        # Check if the response body is larger than 10k
+        if len(response.content) > 32 * 1024:
+            return 'Content Too Large', 413
+
         flask_response = make_response(response.content, response.status_code)
 
         for k, v in response.headers.items():
