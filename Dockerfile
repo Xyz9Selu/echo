@@ -29,6 +29,7 @@ FROM base AS runtime
 # pip install -i https://pypi.douban.com/simple/ --no-cache-dir uwsgi
 COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
+ENV GEVENT_SUPPORT=True
 
 WORKDIR /src
 
