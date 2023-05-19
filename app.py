@@ -54,6 +54,14 @@ def runtime_exception():
 
     raise RuntimeError('raise runtim exception on purpose')
 
+@app.route('/ipinfo')
+def runtime_exception():
+    # Get the client's IP address
+    client_ip = request.remote_addr
+
+    # Return the client's IP address as the response
+    return client_ip
+
 
 @app.route('/access-url')
 def access_url():
