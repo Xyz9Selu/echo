@@ -27,7 +27,7 @@ def echo(path):
     args = pformat(request.args.to_dict())
     form = pformat(request.form.to_dict())
 
-    return 'scheme: {scheme}' \
+    return 'scheme: {scheme}\n' \
            'path: {path}\n' \
            'method: {method}\n' \
            'headers: \n{headers}\n' \
