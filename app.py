@@ -21,19 +21,21 @@ if 'DEBUG' in os.environ:
 def echo(path):
     method = request.method
     headers = request.headers
+    scheme = request.scheme
 
     data = request.get_data()
     args = pformat(request.args.to_dict())
     form = pformat(request.form.to_dict())
 
-    return 'path: {path}\n' \
+    return 'scheme: {scheme}' \
+           'path: {path}\n' \
            'method: {method}\n' \
-           'headers: {headers}\n' \
+           'headers: \n{headers}\n' \
            'data: {data}\n' \
            '-----------------------------------------end data-----------------------------------------\n' \
            'args: {args}\n' \
            'form: {form}'\
-        .strip().format(path=path, method=method, headers=headers, data=data, args=args, form=form)
+        .strip().format(scheme=scheme, path=path, method=method, headers=headers, data=data, args=args, form=form)
 
 
 @app.route('/status/<code>')
