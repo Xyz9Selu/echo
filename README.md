@@ -24,9 +24,11 @@ print system status
 
 ## docker run
 
+```bash
 docker run -d \
   -p 8008:80 \
   registry.cn-hangzhou.aliyuncs.com/endlessstudio/echo:latest
+```
 
 ## docker-compose
 
