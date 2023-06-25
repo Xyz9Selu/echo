@@ -18,6 +18,10 @@ raise an exception and return http status 500
 
 access given url from query params and return result
 
+### /ipinfo
+
+return access url
+
 ### /sys-status/
 
 print system status
