@@ -1,4 +1,4 @@
-FROM python:3.11-slim AS base
+FROM python:3.11-slim-buster AS base
 
 # 设置环境变量
 ENV LANG C.UTF-8
@@ -13,14 +13,13 @@ FROM base AS python-deps
 RUN pip install pipenv -i https://pypi.douban.com/simple/
 RUN sed -i 's,[a-z\.]*\.debian.org,mirrors.aliyun.com,g' /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends build-essential
+RUN apt-get install -y build-essential default-libmysqlclient-dev
 
 # 安装Python依赖于/.venv
 COPY Pipfile .
 COPY Pipfile.lock .
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy --skip-lock uwsgi
-
 
 # 服务层
 FROM base AS runtime
@@ -30,6 +29,12 @@ FROM base AS runtime
 COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
 ENV GEVENT_SUPPORT=True
+
+RUN sed -i 's,[a-z\.]*\.debian.org,mirrors.aliyun.com,g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y telnet curl inetutils-ping vim && \
+    apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /src
 
