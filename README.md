@@ -29,7 +29,7 @@ print system status
 ## docker run
 
 ```bash
-docker run -d \
+docker run -d --name=echo \
   -p 8008:80 \
   registry.cn-hangzhou.aliyuncs.com/endlessstudio/echo:latest
 ```

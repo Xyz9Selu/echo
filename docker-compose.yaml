@@ -7,3 +7,5 @@ services:
     - 8008:80
     environment:
     - DEBUG=False
+    - TZ=Asia/Shanghai
+
